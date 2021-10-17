@@ -3,7 +3,11 @@ import fs from 'fs'
 import ResponseBuilder from './responseBuilder'
 
 
-const options = JSON.parse(fs.readFileSync('./settings.json').toString())
+var options = JSON.parse(fs.readFileSync('./settings.json').toString())
+
+fs.watchFile('./settings.json', { interval: 1000 }, (_curr, _prev) => {
+    options = JSON.parse(fs.readFileSync('./settings.json').toString())
+})
 
 const app = express()
 app.use('/', (req: express.Request, res: express.Response) => {
