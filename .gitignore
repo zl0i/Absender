@@ -44,3 +44,4 @@ CMakeLists.txt.user*
 
 #NodeJS
 node_modules/
+build/

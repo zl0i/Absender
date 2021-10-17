@@ -8,7 +8,11 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mockserver.cpp
+        src/mock-server/mockendpoint.cpp \
+        src/mock-server/mockhost.cpp \
+        src/mock-server/mockresponse.cpp \
+        src/mock-server/mockserver.cpp \
+        src/utils/header.cpp \
 
 RESOURCES += qml.qrc
 
@@ -23,5 +27,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS += \
-    mockserver.h
+HEADERS += \    
+    src/mock-server/mockendpoint.h \
+    src/mock-server/mockhost.h \
+    src/mock-server/mockresponse.h \
+    src/mock-server/mockserver.h \
+    src/utils/header.h \
