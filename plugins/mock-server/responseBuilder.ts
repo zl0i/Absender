@@ -34,7 +34,12 @@ export default class ResponseBuilder {
     }
 
     end(res: express.Response) {
-        this.setHeader(res)
-        res.status(this._response.statusCode).end(this._response.body)
+        if(this._response) {
+            this.setHeader(res)
+            res.status(this._response.statusCode).end(this._response.body)
+        } else {
+            res.status(404).end()
+        }
+        
     }
 }
