@@ -1,35 +1,52 @@
-[
-    {
-        "servername": "test.com",
-        "endpoints": [
-            {
-                "path": "/",
-                "method": "GET",
-                "response": {
-                    "headers": [
-                        {
-                            "name": "Content-Type",
-                            "value": "application/json"
-                        }
-                    ],
-                    "body": "{\"result\":\"ok\"}",
-                    "statusCode": 200
+{
+    "hosts": [
+        {
+            "endpoints": [
+                {
+                    "method": "GET",
+                    "path": "/",
+                    "response": {
+                        "body": "{\"result\": \"ok\"}",
+                        "headers": [
+                            {
+                                "name": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "statusCode": 200
+                    }
+                },
+                {
+                    "method": "GET",
+                    "path": "/users",
+                    "response": {
+                        "body": "{\"users\": []}",
+                        "headers": [
+                            {
+                                "name": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "statusCode": 200
+                    }
+                },
+                {
+                    "method": "GET",
+                    "path": "/points",
+                    "response": {
+                        "body": "",
+                        "headers": [
+                            {
+                                "name": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "statusCode": 404
+                    }
                 }
-            },
-            {
-                "path": "/users/\\d+",
-                "method": "GET",
-                "response": {
-                    "headers": [
-                        {
-                            "name": "Content-Type",
-                            "value": "application/json"
-                        }
-                    ],
-                    "body": "{\"users\":[]}",
-                    "statusCode": 201
-                }
-            }
-        ]
-    }
-]
+            ],
+            "hostname": "test.com"
+        }
+    ],
+    "version": "v0.0.1"
+}

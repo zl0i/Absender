@@ -7,7 +7,7 @@ const options = JSON.parse(fs.readFileSync('./settings.json').toString())
 
 const app = express()
 app.use('/', (req: express.Request, res: express.Response) => {
-    const rb = new ResponseBuilder(options, req)
+    const rb = new ResponseBuilder(options.hosts, req)
     rb.end(res)
 })
 

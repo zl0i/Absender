@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node main.ts",
-    "start:dev": "nodemon --watch \"./**\" --ext \"ts,json\" --ignore \"./**/*.spec.ts\" --exec \"npx ts-node main.ts\""
+    "start:dev": "nodemon --watch \"./**\" --ext \"ts,json\" --ignore \"./**/*.spec.ts\" --exec \"npx ts-node main.ts\"",
+    "build": "tsc",
+    "compil": "tsc & pkg -t node14-win-x64 ./build/main.js"
   },
   "keywords": [
     "absender",

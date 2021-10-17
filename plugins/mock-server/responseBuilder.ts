@@ -13,7 +13,7 @@ export default class ResponseBuilder {
 
     private findServer(name: string) {
         for (const server of this._servers) {
-            if (server.servername == name)
+            if (server.hostname == name)
                 return server
         }
     }
