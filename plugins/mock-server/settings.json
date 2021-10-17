@@ -1,0 +1,35 @@
+[
+    {
+        "servername": "test.com",
+        "endpoints": [
+            {
+                "path": "/",
+                "method": "GET",
+                "response": {
+                    "headers": [
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ],
+                    "body": "{\"result\":\"ok\"}",
+                    "statusCode": 200
+                }
+            },
+            {
+                "path": "/users/\\d+",
+                "method": "GET",
+                "response": {
+                    "headers": [
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ],
+                    "body": "{\"users\":[]}",
+                    "statusCode": 201
+                }
+            }
+        ]
+    }
+]
