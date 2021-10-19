@@ -46,6 +46,7 @@ void MockServer::init()
     QJsonDocument doc(serialize());
     QFile file("./options.json");
     if(file.open(QIODevice::ReadWrite)) {
+        file.resize(0);
         file.write(doc.toJson());
         file.close();
     } else {
