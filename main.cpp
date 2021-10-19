@@ -22,14 +22,15 @@ int main(int argc, char *argv[])
     MockEndpoint ep1("/", "GET", res);
     MockEndpoint ep2("/users", "GET", MockResponse("{\"users\": []}", {{"Content-Type", "application/json"}}));
     MockEndpoint ep3("/points", "GET", MockResponse("", {{"Content-Type", "application/json"}}, 404));
-    MockHost host("test.com");
-    host.addEndpoint(&ep1);
-    host.addEndpoint(&ep2);
-    host.addEndpoint(&ep3);
 
-    server.addHost(&host);
+    MockHost *host = new MockHost("test.com");
+
+    host->addEndpoint(&ep1);
+    host->addEndpoint(&ep2);
+    host->addEndpoint(&ep3);
+
+    server.addHost(host);
     server.start();
-
 
 
     QQmlApplicationEngine engine;

@@ -33,3 +33,12 @@ HEADERS += \
     src/mock-server/mockresponse.h \
     src/mock-server/mockserver.h \
     src/utils/header.h \
+
+
+#DESTDIR = ../deploy
+#QMAKE_PRE_LINK += \
+#    $$QMAKE_COPY_DIR $$shell_path($$PWD/plugins) $$shell_path($$DESTDIR/plugins)
+
+#QMAKE_POST_LINK += \
+#    $$(QTDIR)/bin/windeployqt $$DESTDIR --qmldir $$OUT_PWD/../$$QMAKE_PROJECT_NAME
+
