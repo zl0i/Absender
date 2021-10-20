@@ -8,6 +8,9 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
+    src/gui/gui.cpp \
+    src/gui/projectcontroller.cpp \
+        src/gui/projectmodel.cpp \
         src/mock-server/mockendpoint.cpp \
         src/mock-server/mockhost.cpp \
         src/mock-server/mockresponse.cpp \
@@ -27,12 +30,15 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS += \    
+HEADERS += \
+    src/gui/gui.h \
+    src/gui/projectcontroller.h \
+    src/gui/projectmodel.h \
     src/mock-server/mockendpoint.h \
     src/mock-server/mockhost.h \
     src/mock-server/mockresponse.h \
     src/mock-server/mockserver.h \
-    src/utils/header.h \
+    src/utils/header.h
 
 
 #DESTDIR = ../deploy

@@ -6,11 +6,18 @@
 #include "src/mock-server/mockendpoint.h"
 #include "src/mock-server/mockhost.h"
 
+#include "src/gui/gui.h"
+#include "src/gui/projectmodel.h"
+#include "src/gui/projectcontroller.h"
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
+    QCoreApplication::setOrganizationName("Absender");
+    QCoreApplication::setOrganizationDomain("absender.com");
+    QCoreApplication::setApplicationName("Absender");
 
     QGuiApplication app(argc, argv);
 
@@ -30,17 +37,15 @@ int main(int argc, char *argv[])
     host->addEndpoint(&ep3);
 
     server.addHost(host);
-    server.start();
+    //server.start();
+    ProjectModel projects;
+    ProjectController controller(&projects);
 
+    Gui gui(&app);
 
-    QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
-    engine.load(url);
+    gui.setContextProperty("recents", &projects);
+    gui.setContextProperty("controller", &controller);
+    gui.start();
 
     return app.exec();
 }

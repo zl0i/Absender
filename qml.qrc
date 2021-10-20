@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>qml/Dasboard.qml</file>
+        <file>qml/components/NewProjectDialog.qml</file>
+        <file>qml/elements/AButton.qml</file>
     </qresource>
 </RCC>
