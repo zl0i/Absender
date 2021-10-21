@@ -9,7 +9,7 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     src/gui/gui.cpp \
-    src/gui/projectcontroller.cpp \
+    src/gui/project.cpp \
         src/gui/projectmodel.cpp \
         src/mock-server/mockendpoint.cpp \
         src/mock-server/mockhost.cpp \
@@ -32,7 +32,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     src/gui/gui.h \
-    src/gui/projectcontroller.h \
+    src/gui/project.h \
     src/gui/projectmodel.h \
     src/mock-server/mockendpoint.h \
     src/mock-server/mockhost.h \

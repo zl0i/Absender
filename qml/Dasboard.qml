@@ -59,7 +59,7 @@ Item {
                         width: parent.width
                         height: parent.height
                         hoverEnabled: true
-                        onClicked: controller.openProject(model.path)
+                        onClicked: gui.openProject(model.path)
                     }
                 }
             }
@@ -69,7 +69,7 @@ Item {
     NewProjectDialog {
         id: _newProjectDialog
         onCreate: {
-            controller.createNewProject(name, "")
+            gui.createNewProject(name, "")
             close()
         }
     }
@@ -77,5 +77,6 @@ Item {
     FileDialog {
         id: _fileDialog
         nameFilters: [ "Absender files (*.abs *.json)", "All files (*)" ]
+        onAccepted: gui.openProject(fileUrl)
     }
 }

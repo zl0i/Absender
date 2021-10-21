@@ -8,7 +8,6 @@
 
 #include "src/gui/gui.h"
 #include "src/gui/projectmodel.h"
-#include "src/gui/projectcontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -38,13 +37,12 @@ int main(int argc, char *argv[])
 
     server.addHost(host);
     //server.start();
-    ProjectModel projects;
-    ProjectController controller(&projects);
+
+
 
     Gui gui(&app);
 
-    gui.setContextProperty("recents", &projects);
-    gui.setContextProperty("controller", &controller);
+
     gui.start();
 
     return app.exec();

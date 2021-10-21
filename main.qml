@@ -24,7 +24,7 @@ ApplicationWindow {
         initialItem: _dashboard
         Dasboard {
             id: _dashboard
-            projects: recents //[{name: "Test"}, {name: "Test2"}, {name: "Test3"}]
+            projects: recents
         }
 
     }

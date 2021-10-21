@@ -5,6 +5,8 @@
 #include <QModelIndex>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QSettings>
+#include <QFile>
 
 class ProjectModel : public  QAbstractListModel
 {
@@ -25,7 +27,7 @@ public:
     } RoleTypes;
 
 private:
-
+    QSettings *settings = new QSettings("projects");
     QJsonArray projects;
 
 signals:
