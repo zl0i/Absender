@@ -12,7 +12,13 @@ Gui::Gui(QGuiApplication *app) : app(app)
 
     setContextProperty("recents", &projects);
     setContextProperty("gui", this);
+    setContextProperty("poject", project);
 
+}
+
+Gui::~Gui()
+{
+    project->deleteLater();
 }
 
 void Gui::start()
@@ -30,12 +36,17 @@ void Gui::createNewProject(QString name, QString)
     QFile file("../" + name + ".abs");
     QFileInfo info(file);
     if(file.open(QIODevice::ReadWrite)) {
-        qDebug() << "new project created";
         projects.append(name, info.absoluteFilePath());
         QJsonObject obj {
             {"name", name},
             {"path", info.absoluteFilePath()}
         };
+        QJsonDocument doc(QJsonObject {
+                              {"name", name},
+                              {"services", QJsonObject {}}
+                          });
+        file.write(doc.toJson());
+        file.close();
     }
 }
 
@@ -43,8 +54,8 @@ void Gui::openProject(QString path)
 {
     QFile file(path);
     if(file.open(QIODevice::ReadOnly)) {
-       QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-       project = new Project(doc.object());
+        QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+        project = new Project(doc.object());
     }
 }
 

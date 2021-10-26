@@ -1,10 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "src/mock-server/mockserver.h"
+/*#include "src/mock-server/mockserver.h"
 #include "src/mock-server/mockresponse.h"
 #include "src/mock-server/mockendpoint.h"
-#include "src/mock-server/mockhost.h"
+#include "src/mock-server/mockhost.h"*/
 
 #include "src/gui/gui.h"
 #include "src/gui/projectmodel.h"
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    MockServer server;
+    /*MockServer server;
 
     MockResponse res("{\"result\": \"ok\"}", {
                          {"Content-Type", "application/json"}
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     host->addEndpoint(&ep3);
 
     server.addHost(host);
-    //server.start();
+    server.start();*/
 
 
 

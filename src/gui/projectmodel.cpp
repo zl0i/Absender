@@ -3,16 +3,19 @@
 ProjectModel::ProjectModel() :  QAbstractListModel()
 {
     QJsonArray recent = settings->value("recent").toJsonArray();
-    QJsonArray arr;
-    this->insertRows(0, 1);
+    QJsonArray existProjects;
+    this->insertRows(0, recent.count());
     for(int i = 0; i < recent.count(); i++) {
         QJsonObject project = recent.at(i).toObject();
         if(QFile::exists(project.value("path").toString())) {
-            this->append(project.value("name").toString(), project.value("path").toString());
-            arr.append(project);
+            projects.append(QJsonObject {
+                                {"name", project.value("name").toString()},
+                                {"path", project.value("path").toString()}
+                            });
+            existProjects.append(project);
         }
     }
-    settings->setValue("recent", arr);
+    settings->setValue("recent", existProjects);
 }
 
 int ProjectModel::rowCount(const QModelIndex &) const

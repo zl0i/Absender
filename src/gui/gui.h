@@ -18,6 +18,7 @@ class Gui : public QObject
     Q_OBJECT
 public:
     explicit Gui(QGuiApplication *app);
+    ~Gui();
 
     void start();
     void setContextProperty(QString name, QObject* obj);
