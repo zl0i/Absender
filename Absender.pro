@@ -9,6 +9,9 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     src/gui/gui.cpp \
+    src/gui/mockendpointsmodel.cpp \
+    src/gui/mockhostmodel.cpp \
+    src/gui/mockservermodel.cpp \
     src/gui/project.cpp \
         src/gui/projectmodel.cpp \
         src/mock-server/mockendpoint.cpp \
@@ -32,6 +35,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     src/gui/gui.h \
+    src/gui/mockendpointsmodel.h \
+    src/gui/mockhostmodel.h \
+    src/gui/mockservermodel.h \
     src/gui/project.h \
     src/gui/projectmodel.h \
     src/mock-server/mockendpoint.h \

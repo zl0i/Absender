@@ -9,10 +9,11 @@ Gui::Gui(QGuiApplication *app) : app(app)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
+    project = new Project(QJsonObject {});
 
     setContextProperty("recents", &projects);
     setContextProperty("gui", this);
-    setContextProperty("poject", project);
+    setContextProperty("project", project);
 
 }
 

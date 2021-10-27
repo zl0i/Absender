@@ -13,7 +13,7 @@ void MockHost::addEndpoint(MockEndpoint *endpoint)
 void MockHost::removeEndpoint(QString path, QString method)
 {
     for(int i = 0; i < _endpoints.length(); i++) {
-        MockEndpoint *endpoint = _endpoints[i];
+        MockEndpoint *endpoint = _endpoints.at(i);
         if(endpoint->path() == path && endpoint->method() == method) {
             delete  endpoint;
             _endpoints.removeAt(i);

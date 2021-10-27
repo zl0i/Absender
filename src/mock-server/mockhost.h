@@ -17,7 +17,7 @@ public:
 
     void addEndpoint(MockEndpoint* endpoint);
     void removeEndpoint(QString path, QString method);
-    QList<MockEndpoint*> endpoints() { return _endpoints; }
+    QList<MockEndpoint*> *endpoints() { return &_endpoints; }
 
 
     QJsonObject toJSON();

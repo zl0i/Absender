@@ -20,7 +20,7 @@ public:
 
     void addHost(MockHost *host);
     void removeHost(QString hostname);
-    QList<MockHost*>* hosts() { return &_hosts; }
+    QList<MockHost*> *hosts() { return &_hosts; }
 
 
 private:

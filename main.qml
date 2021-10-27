@@ -17,16 +17,25 @@ ApplicationWindow {
 
 
     StackView {
-        id: _stack
+        id: _stackView
         x: 70
         width: parent.width - 70
         height: parent.height
         initialItem: _dashboard
-        Dasboard {
-            id: _dashboard
-            projects: recents
-        }
+    }
 
+    Dasboard {
+        id: _dashboard
+        visible: false
+        projects: recents
+    }
+    API {
+        id: _api
+        visible: false
+    }
+    MockServers {
+        id: _mockServers
+        visible: false
     }
 
     Rectangle {
@@ -39,7 +48,7 @@ ApplicationWindow {
             x:1; y: 1
             width: parent.width-2
             Repeater {
-                model: ['Projects', 'API', 'Mock Server']
+                model: ['Projects', 'API', 'Mock Servers']
                 delegate:   Rectangle {
                     x:1; y: 1
                     width: parent.width-2
@@ -62,7 +71,17 @@ ApplicationWindow {
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            console.log(modelData)
+                            switch (modelData) {
+                            case "Projects":
+                                _stackView.replace(_dashboard)
+                                break
+                            case "API":
+                                _stackView.replace(_api)
+                                break
+                            case "Mock Servers":
+                                _stackView.replace(_mockServers)
+                                break
+                            }
                         }
                     }
                 }
