@@ -16,6 +16,7 @@ public:
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex &index, const QVariant &data, int role = Qt::EditRole);
     void append(MockHost *host);
     void append(QList<MockHost*> *hosts);
 
@@ -28,8 +29,12 @@ public:
 
 private:
     QList<MockHost*> hosts;
+    QList<MockEndpointsModel*> endpoints;
 
 signals:
+
+public slots:
+    void append();
 
 };
 

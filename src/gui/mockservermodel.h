@@ -15,7 +15,8 @@ public:
     explicit MockServerModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;    
+    bool setData(const QModelIndex &index, const QVariant &data, int role = Qt::EditRole);
     void append(MockServer *host);
 
     QHash<int, QByteArray> roleNames() const;
@@ -27,8 +28,12 @@ public:
 
 private:
     QList<MockServer*> servers;
+    QList<MockHostModel*> hosts;
 
 signals:
+
+public slots:
+    void append();
 
 };
 

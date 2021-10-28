@@ -13,12 +13,12 @@ public:
     explicit MockEndpointsModel(QObject *parent = nullptr);
 
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    void append(MockEndpoint *endpoint);
-    void append(QList<MockEndpoint*> *endpoints);
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override ;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex &index, const QVariant &data ,int role = Qt::EditRole) override;
 
-    QHash<int, QByteArray> roleNames() const;
+
+    QHash<int, QByteArray> roleNames() const override;
 
     enum {
         MethodRole = Qt::UserRole+1,
@@ -30,6 +30,11 @@ private:
     QList<MockEndpoint*> endpoints;
 
 signals:
+
+public slots:
+    void append(MockEndpoint *endpoint);
+    void append(QList<MockEndpoint*> *endpoints);
+    void append(QString method, QString path);
 
 };
 

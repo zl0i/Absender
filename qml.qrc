@@ -6,5 +6,7 @@
         <file>qml/elements/AButton.qml</file>
         <file>qml/API.qml</file>
         <file>qml/MockServers.qml</file>
+        <file>qml/components/MockServerView.qml</file>
+        <file>qml/elements/RowView.qml</file>
     </qresource>
 </RCC>

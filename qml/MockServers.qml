@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import "./components"
+
 Item {
     id: _page
 
@@ -18,67 +20,33 @@ Item {
         height: parent.height
         border { width: 1; color: "#C4C4C4" }
         color: "#1A1A1A"
-        ListView {
-            id: _mockView
+        MockServerView {
+            id: _mocksView
             x: 20; y: 100
             width: parent.width - x*2
             height: parent.height - y
-            clip: true
-            leftMargin: 20
             model: project.mocks
+        }
+    }
 
-            delegate: Item {
-                id: _server
-                width: _mockView.width
-                height: _hostsView.height+20
-
-                property var hostsModel: model.hosts
-
-                Label {
-                    width: parent.width
-                    height: parent.height
-                    color: "#FFFFFF"
-                    text: model.name
-                }
-                ListView {
-                    id: _hostsView
-                    y: 25
-                    width: parent.width
-                    height: contentHeight
-                    leftMargin: 20
-                    model: _server.hostsModel
-
-
-                    delegate: Item {
-                        id: _hostDelegate
-                        width: parent.width
-                        height: _endpointsView.height+30
-
-                        property var endpoints: model.endpoints
-
-                        Label {
-                            width: 25
-                            height: 30
-                            color: "#FFFFFF"
-                            text: model.hostname
-                        }
-                        ListView {
-                            id: _endpointsView
-                            y: 30
-                            width: parent.width
-                            height: contentHeight
-                            leftMargin: 20
-                            model: endpoints
-                            delegate: Label {
-                                width: parent.width
-                                height: 30
-                                color: "#FFFFFF"
-                                text: model.path
-                            }
-                        }
-                    }
-                }
-            }
+    Row {
+        x: parent.width/5 + 50
+        y: 100
+        spacing: 10
+        height: 40
+        TextField {
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: 18
+            text: _mocksView.endpoint ? _mocksView.endpoint.method : ''
+            onEditingFinished: _mocksView.endpoint.method = text
+        }
+        TextField {
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: 14
+            text: _mocksView.endpoint ? ("http://" + _mocksView.host.hostname + _mocksView.endpoint.path) : ''
+            onEditingFinished: _mocksView.endpoint.path = text
         }
     }
 }

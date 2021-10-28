@@ -15,23 +15,53 @@ QVariant MockServerModel::data(const QModelIndex &index, int role) const
     if(index.row() >= servers.count())
         return QVariant();
 
-    MockServer *s = servers.at(index.row());
-
     switch (role) {
     case NameRole:
         return "Mock Server " + QString::number(index.row()+1);
-    case HostsRole:
-        MockHostModel *hosts = new MockHostModel();
-        hosts->append(s->hosts());
-        return QVariant::fromValue(hosts);
+    case HostsRole: {
+        MockHostModel *model = hosts.at(index.row());
+        return QVariant::fromValue(model);
+    }
     }
     return QVariant();
+}
+
+bool MockServerModel::setData(const QModelIndex &index, const QVariant &data, int role)
+{
+    if(index.row() >= servers.count())
+        return false;
+
+    //MockServer *s = servers.at(index.row());
+
+    switch (role) {
+    case NameRole:
+        return true;
+    case HostsRole:
+
+        return true;
+    }
+    return false;
 }
 
 void MockServerModel::append(MockServer *server)
 {
     emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
     servers.append(server);
+    MockHostModel *model = new MockHostModel(this);
+    for(int i = 0; i < server->hosts()->count(); i++) {
+        model->append(server->hosts()->at(i));
+    }
+    hosts.append(model);
+    emit endInsertRows();
+    emit dataChanged(index(0,0), index(rowCount(), 0));
+}
+
+void MockServerModel::append()
+{
+    emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    MockServer *srv = new MockServer();
+    srv->addHost(new MockHost("aaaaa"));
+    servers.append(srv);
     emit endInsertRows();
     emit dataChanged(index(0,0), index(rowCount(), 0));
 }

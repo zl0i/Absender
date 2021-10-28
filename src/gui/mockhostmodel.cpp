@@ -21,18 +21,28 @@ QVariant MockHostModel::data(const QModelIndex &index, int role) const
     case HostNameRole:
         return h->hostname();
     case EndpointsRole:
-        MockEndpointsModel *model = new MockEndpointsModel();
-        model->append(h->endpoints());
+        MockEndpointsModel *model = endpoints.at(index.row());
         return QVariant::fromValue(model);
     }
     return QVariant();
 
 }
 
+bool MockHostModel::setData(const QModelIndex &index, const QVariant &data, int role)
+{
+    qDebug() << index.row() << role << data;
+    return true;
+}
+
 void MockHostModel::append(MockHost *host)
 {
     emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
     hosts.append(host);
+    MockEndpointsModel *model = new MockEndpointsModel(this);
+    for(int i = 0; i < host->endpoints()->count(); i++) {
+        model->append(host->endpoints()->at(i));
+    }
+    endpoints.append(model);
     emit endInsertRows();
     emit dataChanged(index(0,0), index(rowCount(), 0));
 }
@@ -41,11 +51,18 @@ void MockHostModel::append(QList<MockHost*> *hosts)
 {
     emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
     for(int i =0; i < hosts->length(); i++) {
-        this->hosts.append(hosts->at(i));
+        MockHost *host = hosts->at(i);
+        this->hosts.append(host);
+        MockEndpointsModel *model = new MockEndpointsModel(this);
+        for(int i = 0; i < host->endpoints()->count(); i++) {
+            model->append(host->endpoints()->at(i));
+        }
+        endpoints.append(model);
     }
     emit endInsertRows();
     emit dataChanged(index(0,0), index(rowCount(), 0));
 }
+
 
 QHash<int, QByteArray> MockHostModel::roleNames() const
 {
@@ -54,4 +71,13 @@ QHash<int, QByteArray> MockHostModel::roleNames() const
     hash[HostNameRole] = "hostname";
     hash[EndpointsRole] = "endpoints";
     return hash;
+}
+
+void MockHostModel::append()
+{
+    emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    hosts.append(new MockHost("new host"));
+    endpoints.append(new MockEndpointsModel(this));
+    emit endInsertRows();
+    emit dataChanged(index(0,0), index(rowCount(), 0));
 }

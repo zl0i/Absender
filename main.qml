@@ -62,8 +62,6 @@ ApplicationWindow {
                         color: "#FFFFFF"
                         text: modelData
                     }
-
-
                     MouseArea {
                         id: _mouseArea
                         width: parent.width
