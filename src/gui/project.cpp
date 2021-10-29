@@ -22,5 +22,37 @@ Project::Project(QJsonObject)
     //server.start();
 
     _mocks->append(server);
-    _mocks->append(new MockServer());
+    //_mocks->append(new MockServer());
+
+
+}
+
+Project::~Project()
+{
+    for(int i = 0; i < _mocks->rowCount(); i++) {
+        delete _mocks->at(i);
+    }
+}
+
+void Project::startMockServers()
+{
+    for(int i = 0; i < _mocks->rowCount(); i++) {
+        _mocks->at(i)->start();
+    }
+    _isMockStart = true;
+    emit isMockStartChanged();
+}
+
+void Project::stopMockServers()
+{
+    for(int i = 0; i < _mocks->rowCount(); i++) {
+        _mocks->at(i)->stop();
+    }
+    _isMockStart = false;
+    emit isMockStartChanged();
+}
+
+void Project::saveMockServers()
+{
+    qDebug() << _mocks->toJSON();
 }

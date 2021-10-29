@@ -13,13 +13,16 @@ class MockServerModel : public QAbstractListModel
     Q_OBJECT
 public:
     explicit MockServerModel(QObject *parent = nullptr);
+    ~MockServerModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;    
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &index, const QVariant &data, int role = Qt::EditRole);
-    void append(MockServer *host);
 
     QHash<int, QByteArray> roleNames() const;
+
+    QJsonArray toJSON();
+    MockServer* at(int i);
 
     enum {
         NameRole = Qt::UserRole+1,
@@ -34,6 +37,8 @@ signals:
 
 public slots:
     void append();
+    void append(MockServer *host);
+    void appendHost(int index, QString hostname);
 
 };
 

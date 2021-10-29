@@ -19,7 +19,7 @@ Gui::Gui(QGuiApplication *app) : app(app)
 
 Gui::~Gui()
 {
-    project->deleteLater();
+    delete project;
 }
 
 void Gui::start()

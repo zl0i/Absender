@@ -18,6 +18,8 @@ public:
     bool setData(const QModelIndex &index, const QVariant &data ,int role = Qt::EditRole) override;
 
 
+    QJsonArray toJSON();
+
     QHash<int, QByteArray> roleNames() const override;
 
     enum {

@@ -5,6 +5,13 @@ MockServerModel::MockServerModel(QObject *parent) : QAbstractListModel(parent)
 
 }
 
+MockServerModel::~MockServerModel()
+{
+    for(int i = 0; i < rowCount(); i++) {
+        at(i)->stop();
+    }
+}
+
 int MockServerModel::rowCount(const QModelIndex &) const
 {
     return servers.count();
@@ -46,12 +53,12 @@ bool MockServerModel::setData(const QModelIndex &index, const QVariant &data, in
 void MockServerModel::append(MockServer *server)
 {
     emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
+
     servers.append(server);
     MockHostModel *model = new MockHostModel(this);
-    for(int i = 0; i < server->hosts()->count(); i++) {
-        model->append(server->hosts()->at(i));
-    }
+    model->append(server->hosts());
     hosts.append(model);
+
     emit endInsertRows();
     emit dataChanged(index(0,0), index(rowCount(), 0));
 }
@@ -60,11 +67,21 @@ void MockServerModel::append()
 {
     emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
     MockServer *srv = new MockServer();
-    srv->addHost(new MockHost("aaaaa"));
     servers.append(srv);
     emit endInsertRows();
     emit dataChanged(index(0,0), index(rowCount(), 0));
 }
+
+void MockServerModel::appendHost(int row, QString hostname)
+{
+    MockHost *host = new MockHost(hostname);
+    MockServer *server = servers.at(row);
+    server->addHost(host);
+    MockHostModel *model = hosts.at(row);
+    model->append(host);
+    emit dataChanged(index(row, 0), index(row, 0));
+}
+
 
 QHash<int, QByteArray> MockServerModel::roleNames() const
 {
@@ -73,4 +90,21 @@ QHash<int, QByteArray> MockServerModel::roleNames() const
     hash[NameRole] = "name";
     hash[HostsRole] = "hosts";
     return hash;
+}
+
+QJsonArray MockServerModel::toJSON()
+{
+    QJsonArray jservers;
+    for(int i = 0; i < servers.count(); i++) {
+        jservers.append(QJsonObject {
+                            {"name", "Mock Server " + QString::number(i+1)},
+                            {"hosts", hosts.at(i)->toJSON()},
+                        });
+    }
+    return jservers;
+}
+
+MockServer *MockServerModel::at(int i)
+{
+    return servers.at(i);
 }

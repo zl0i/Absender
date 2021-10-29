@@ -19,12 +19,7 @@ ListView {
         property var hostsModel: model.hosts
 
         onClicked: {
-            hostsModel.append()
-            /*_mockView.model.append()
-            _mockView.modelChanged()
-            hostsModelChanged()
-
-            _hostsView.model = model.hosts*/
+            _mockView.model.appendHost(index, "test2.com")
         }
 
         ListView {
@@ -46,7 +41,7 @@ ListView {
                 property var endpoints: model.endpoints
 
                 onClicked: {
-                    model.endpoints.append('GET', '/')
+                    _hostsView.model.appendEndpoint(index, '/path')
                 }
 
                 ListView {

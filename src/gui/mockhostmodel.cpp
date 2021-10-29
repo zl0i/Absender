@@ -63,6 +63,16 @@ void MockHostModel::append(QList<MockHost*> *hosts)
     emit dataChanged(index(0,0), index(rowCount(), 0));
 }
 
+void MockHostModel::appendEndpoint(int row, QString path)
+{
+    MockEndpoint *ep = new MockEndpoint(path);
+    MockHost *host = hosts.at(row);
+    host->addEndpoint(ep);
+    MockEndpointsModel *epmodel = endpoints.at(row);
+    epmodel->append(ep);
+    emit dataChanged(index(row, 0), index(row, 0));
+}
+
 
 QHash<int, QByteArray> MockHostModel::roleNames() const
 {
@@ -73,10 +83,22 @@ QHash<int, QByteArray> MockHostModel::roleNames() const
     return hash;
 }
 
+QJsonArray MockHostModel::toJSON()
+{
+    QJsonArray jhosts;
+    for(int i = 0; i < hosts.count(); i++) {
+        QJsonObject host;
+        host.insert("hostname", hosts.at(i)->hostname());
+        host.insert("endpoints", endpoints.at(i)->toJSON());
+        jhosts.append(host);
+    }
+    return jhosts;
+}
+
 void MockHostModel::append()
 {
     emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    hosts.append(new MockHost("new host"));
+    hosts.append(new MockHost("new.host"));
     endpoints.append(new MockEndpointsModel(this));
     emit endInsertRows();
     emit dataChanged(index(0,0), index(rowCount(), 0));

@@ -55,6 +55,15 @@ bool MockEndpointsModel::setData(const QModelIndex &index, const QVariant &data,
     return false;
 }
 
+QJsonArray MockEndpointsModel::toJSON()
+{
+    QJsonArray jendpoints;
+    for(int i = 0; i < endpoints.length(); i++) {
+        jendpoints.append(endpoints.at(i)->toJSON());
+    }
+    return jendpoints;
+}
+
 void MockEndpointsModel::append(MockEndpoint *endpoint)
 {
     emit beginInsertRows(QModelIndex(), rowCount(), rowCount());

@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import "./components"
+import "./elements"
 
 Item {
     id: _page
@@ -47,6 +48,19 @@ Item {
             font.pixelSize: 14
             text: _mocksView.endpoint ? ("http://" + _mocksView.host.hostname + _mocksView.endpoint.path) : ''
             onEditingFinished: _mocksView.endpoint.path = text
+        }
+    }
+
+    Row {
+        x: parent.width/5 + 50; y: 50
+        spacing: 10
+        AButton {
+            text: qsTr("save")
+            onClicked: project.saveMockServers()
+        }
+        AButton {
+            text: project.isMockStart ? qsTr("stop") : qsTr("start")
+            onClicked: project.isMockStart ? project.stopMockServers() : project.startMockServers()
         }
     }
 }

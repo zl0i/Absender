@@ -17,10 +17,11 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &index, const QVariant &data, int role = Qt::EditRole);
-    void append(MockHost *host);
-    void append(QList<MockHost*> *hosts);
+
 
     QHash<int, QByteArray> roleNames() const;
+
+    QJsonArray toJSON();
 
     enum {
         HostNameRole = Qt::UserRole+1,
@@ -35,6 +36,9 @@ signals:
 
 public slots:
     void append();
+    void append(MockHost *host);
+    void append(QList<MockHost*> *hosts);
+    void appendEndpoint(int row, QString path);
 
 };
 
