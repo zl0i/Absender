@@ -30,8 +30,18 @@ QVariant MockHostModel::data(const QModelIndex &index, int role) const
 
 bool MockHostModel::setData(const QModelIndex &index, const QVariant &data, int role)
 {
-    qDebug() << index.row() << role << data;
-    return true;
+    if(index.row() >= hosts.count())
+        return false;
+
+    MockHost *h = hosts.at(index.row());
+
+    switch (role) {
+    case HostNameRole: {
+        h->setHostname(data.toString());
+        return true;
+    }
+    }
+    return false;
 }
 
 void MockHostModel::append(MockHost *host)
@@ -39,6 +49,7 @@ void MockHostModel::append(MockHost *host)
     emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
     hosts.append(host);
     MockEndpointsModel *model = new MockEndpointsModel(this);
+    connect(model, &MockEndpointsModel::dataChanged, this, &MockHostModel::dataChanged);
     for(int i = 0; i < host->endpoints()->count(); i++) {
         model->append(host->endpoints()->at(i));
     }
@@ -54,6 +65,7 @@ void MockHostModel::append(QList<MockHost*> *hosts)
         MockHost *host = hosts->at(i);
         this->hosts.append(host);
         MockEndpointsModel *model = new MockEndpointsModel(this);
+        connect(model, &MockEndpointsModel::dataChanged, this, &MockHostModel::dataChanged);
         for(int i = 0; i < host->endpoints()->count(); i++) {
             model->append(host->endpoints()->at(i));
         }
@@ -69,6 +81,7 @@ void MockHostModel::appendEndpoint(int row, QString path)
     MockHost *host = hosts.at(row);
     host->addEndpoint(ep);
     MockEndpointsModel *epmodel = endpoints.at(row);
+    connect(epmodel, &MockEndpointsModel::dataChanged, this, &MockHostModel::dataChanged);
     epmodel->append(ep);
     emit dataChanged(index(row, 0), index(row, 0));
 }
@@ -93,13 +106,4 @@ QJsonArray MockHostModel::toJSON()
         jhosts.append(host);
     }
     return jhosts;
-}
-
-void MockHostModel::append()
-{
-    emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    hosts.append(new MockHost("new.host"));
-    endpoints.append(new MockEndpointsModel(this));
-    emit endInsertRows();
-    emit dataChanged(index(0,0), index(rowCount(), 0));
 }

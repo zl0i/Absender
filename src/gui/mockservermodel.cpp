@@ -22,9 +22,11 @@ QVariant MockServerModel::data(const QModelIndex &index, int role) const
     if(index.row() >= servers.count())
         return QVariant();
 
+    MockServer *s = servers.at(index.row());
+
     switch (role) {
     case NameRole:
-        return "Mock Server " + QString::number(index.row()+1);
+        return s->name();
     case HostsRole: {
         MockHostModel *model = hosts.at(index.row());
         return QVariant::fromValue(model);
@@ -38,13 +40,14 @@ bool MockServerModel::setData(const QModelIndex &index, const QVariant &data, in
     if(index.row() >= servers.count())
         return false;
 
-    //MockServer *s = servers.at(index.row());
+    MockServer *s = servers.at(index.row());
 
     switch (role) {
     case NameRole:
+        s->setName(data.toString());
         return true;
-    case HostsRole:
-
+    case PortRole:
+        s->setPort(data.toUInt());
         return true;
     }
     return false;
@@ -56,18 +59,10 @@ void MockServerModel::append(MockServer *server)
 
     servers.append(server);
     MockHostModel *model = new MockHostModel(this);
+    connect(model, &MockHostModel::dataChanged, this, &MockServerModel::dataChanged);
     model->append(server->hosts());
     hosts.append(model);
 
-    emit endInsertRows();
-    emit dataChanged(index(0,0), index(rowCount(), 0));
-}
-
-void MockServerModel::append()
-{
-    emit beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    MockServer *srv = new MockServer();
-    servers.append(srv);
     emit endInsertRows();
     emit dataChanged(index(0,0), index(rowCount(), 0));
 }
@@ -78,6 +73,7 @@ void MockServerModel::appendHost(int row, QString hostname)
     MockServer *server = servers.at(row);
     server->addHost(host);
     MockHostModel *model = hosts.at(row);
+    connect(model, &MockHostModel::dataChanged, this, &MockServerModel::dataChanged);
     model->append(host);
     emit dataChanged(index(row, 0), index(row, 0));
 }
@@ -88,6 +84,7 @@ QHash<int, QByteArray> MockServerModel::roleNames() const
     QHash<int, QByteArray> hash;
 
     hash[NameRole] = "name";
+    hash[PortRole] = "port";
     hash[HostsRole] = "hosts";
     return hash;
 }

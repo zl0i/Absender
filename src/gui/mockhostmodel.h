@@ -35,7 +35,6 @@ private:
 signals:
 
 public slots:
-    void append();
     void append(MockHost *host);
     void append(QList<MockHost*> *hosts);
     void appendEndpoint(int row, QString path);

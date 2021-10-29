@@ -26,6 +26,7 @@ public:
 
     enum {
         NameRole = Qt::UserRole+1,
+        PortRole,
         HostsRole,
     } RoleTypes;
 
@@ -36,7 +37,6 @@ private:
 signals:
 
 public slots:
-    void append();
     void append(MockServer *host);
     void appendHost(int index, QString hostname);
 

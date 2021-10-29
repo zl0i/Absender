@@ -19,12 +19,14 @@ Project::Project(QJsonObject)
     host->addEndpoint(ep3);
 
     server->addHost(host);
-    //server.start();
 
     _mocks->append(server);
-    //_mocks->append(new MockServer());
-
-
+    _mocks->append(new MockServer);
+    connect(_mocks, &MockServerModel::dataChanged, [=]() {
+        for(int i = 0; i < _mocks->rowCount(); i++) {
+            _mocks->at(i)->configChanged();
+        }
+    });
 }
 
 Project::~Project()

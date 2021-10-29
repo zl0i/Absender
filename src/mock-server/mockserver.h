@@ -7,8 +7,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
-
 #include <QDebug>
+#include <QFileInfo>
+
 #include "mockhost.h"
 
 class MockServer : public QObject
@@ -18,10 +19,14 @@ public:
     explicit MockServer(QObject *parent = nullptr);
     ~MockServer();
 
+    QString name() { return _name; }
+    void setName(QString name);
+    int port() { return _port; }
+    void setPort(int port);
+
     void addHost(MockHost *host);
     void removeHost(QString hostname);
     QList<MockHost*> *hosts() { return &_hosts; }
-
 
 private:
 #ifdef QT_NO_DEBUG
@@ -32,6 +37,10 @@ private:
 
     QList<MockHost*> _hosts;
     QProcess process;
+    QString _name = "Mock Server";
+    int _port = 0;
+
+    QFile *configFile;
 
     QJsonObject serialize();
     void init();
@@ -47,6 +56,8 @@ public slots:
 
     void serverFinished();
     void serverError();
+
+    void configChanged();
 
 signals:
 

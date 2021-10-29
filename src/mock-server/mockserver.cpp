@@ -14,6 +14,16 @@ MockServer::~MockServer()
     stop();
 }
 
+void MockServer::setName(QString name)
+{
+    _name = name;
+}
+
+void MockServer::setPort(int port)
+{
+    _port = port;
+}
+
 void MockServer::addHost(MockHost *host)
 {
     _hosts.append(host);
@@ -32,23 +42,29 @@ void MockServer::removeHost(QString hostname)
 QJsonObject MockServer::serialize()
 {
     QJsonObject obj;
-    QJsonArray hosts_json;
+    QJsonArray jhost;
     for(int i = 0; i < _hosts.length(); i++) {
-        hosts_json.append(_hosts.at(i)->toJSON());
+        jhost.append(_hosts.at(i)->toJSON());
     }
+    obj.insert("name", _name);
+    obj.insert("port", _port);
     obj.insert("version", "v0.0.1");
-    obj.insert("hosts", hosts_json);
+    obj.insert("hosts", jhost);
     return obj;
 }
 
 void MockServer::init()
 {
     QJsonDocument doc(serialize());
-    QFile file("./options.json");
-    if(file.open(QIODevice::ReadWrite)) {
-        file.resize(0);
-        file.write(doc.toJson());
-        file.close();
+    QString name = "t"
+            + QString::number(QDateTime::currentMSecsSinceEpoch())
+            + "-" + _name
+            + "-options.json";
+    configFile = new QFile("./" + name);
+    if(configFile->open(QIODevice::ReadWrite)) {
+        configFile->resize(0);
+        configFile->write(doc.toJson());
+        configFile->close();
     } else {
         qDebug() << "file did't writed";
     }
@@ -98,7 +114,8 @@ void MockServer::start()
     writeHostsFile();
 
     QStringList arguments;
-    arguments.append("-f ./../options.json");
+    QFileInfo info(*configFile);
+    arguments.append("-f " + info.absoluteFilePath());
     process.start(jsserver, arguments);
 }
 
@@ -106,6 +123,8 @@ void MockServer::stop()
 {
     process.kill();
     cleanHostsFile();
+    configFile->remove();
+    configFile->deleteLater();
 }
 
 void MockServer::consoleData()
@@ -129,4 +148,9 @@ void MockServer::serverFinished()
 void MockServer::serverError()
 {
 
+}
+
+void MockServer::configChanged()
+{
+    init();
 }
